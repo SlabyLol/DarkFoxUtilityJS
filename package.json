@@ -1,0 +1,17 @@
+{
+  "name": "darkfox-js",
+  "version": "1.0.0",
+  "description": "A sleek utility library for both Node.js and direct browser integration.",
+  "main": "index.js",
+  "type": "module",
+  "keywords": [
+    "darkfox",
+    "browser",
+    "umd",
+    "esm",
+    "utils"
+  ],
+  "author": "DF-Exploiter",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 DarkFox Co."
+}
