@@ -1,15 +1,21 @@
 {
-  "name": "darkfox-js",
+  "name": "@slabylol/darkfoxutilityjs",
   "version": "1.0.0",
-  "description": "A sleek utility library for both Node.js and direct browser integration.",
+  "description": "A sleek utility library by DarkFox Co. for Node.js and direct browser integration.",
   "main": "index.js",
   "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SlabyLol/DarkFoxUtilityJS.git"
+  },
   "keywords": [
     "darkfox",
+    "utility",
     "browser",
-    "umd",
-    "esm",
-    "utils"
+    "esm"
   ],
   "author": "DF-Exploiter",
   "license": "MIT",
