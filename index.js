@@ -1,11 +1,9 @@
 /**
- * DarkFox Co. Advanced Utility Library
- * Enhanced Edition - Pure JS (Browser & Node.js compatible)
+ * DarkFoxUtilityJS - Full Suite Engine v1.3.0
+ * Includes: Performance, Security, Storage, UI & Adaptive WebAI
  */
 
-// ==========================================
-// 1. SYSTEM & LOGGING
-// ==========================================
+// --- 1. CORE & LOGGING ---
 export const foxLog = {
   info: (msg) => console.log(`%c[DarkFox INFO]%c ${msg}`, 'color: #00bcd4; font-weight: bold;', ''),
   success: (msg) => console.log(`%c[DarkFox SUCCESS]%c ${msg}`, 'color: #4caf50; font-weight: bold;', ''),
@@ -13,74 +11,76 @@ export const foxLog = {
   error: (msg) => console.error(`%c[DarkFox ERROR]%c ${msg}`, 'color: #f44336; font-weight: bold;', '')
 };
 
-export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+export const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
-// ==========================================
-// 2. SECURITY & STRINGS
-// ==========================================
-
-// Generates a random secure-looking string ID
-export function generateFoxId(prefix = 'df') {
-  const randomPart = Math.random().toString(16).substring(2, 10);
-  return `${prefix}_${randomPart}_${Date.now().toString().slice(-4)}`;
+// --- 2. PERFORMANCE ---
+export function debounce(func, delay = 300) {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
 }
 
-// Generate a random, strong password with numbers and symbols
-export function generatePassword(length = 16) {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
-  let password = '';
-  for (let i = 0; i < length; i++) {
-    password += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return password;
+export function throttle(func, limit = 300) {
+  let inThrottle;
+  return (...args) => {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
 }
 
-// Escapes HTML tags to prevent XSS injection attacks
+// --- 3. SECURITY & DATA ---
+export function generatePassword(len = 16) {
+  const c = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+  return Array.from({length: len}, () => c[Math.floor(Math.random()*c.length)]).join('');
+}
+
 export function escapeHtml(str) {
-  return str.replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
+  const p = {'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'};
+  return str.replace(/[&<>"']/g, m => p[m]);
 }
 
-// ==========================================
-// 3. DATA & ARRAYS
-// ==========================================
+export function deepClone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
 
-// Shuffles an array completely random (Fisher-Yates algorithm)
-export function shuffleArray(arr) {
-  const newArr = [...arr];
-  for (let i = newArr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+// --- 4. SMART STORAGE ---
+export const foxStorage = {
+  set: (key, val, ttl = null) => {
+    localStorage.setItem(key, JSON.stringify({ data: val, exp: ttl ? Date.now() + ttl : null }));
+  },
+  get: (key) => {
+    const item = JSON.parse(localStorage.getItem(key));
+    if (!item) return null;
+    if (item.exp && Date.now() > item.exp) { localStorage.removeItem(key); return null; }
+    return item.data;
   }
-  return newArr;
-}
+};
 
-// Removes all duplicate values from an array
-export function removeDuplicates(arr) {
-  return [...new Set(arr)];
-}
+// --- 5. ADAPTIVE WEBAI ENGINE ---
+export class DFWebAI {
+  constructor(apiKey) {
+    this.apiKey = apiKey;
+    this.apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.apiKey}`;
+    this.history = [];
+    this.instruct = "You are an adaptive AI by DarkFox Co. Mirror the user's language, tone, and style perfectly.";
+  }
 
-// Truncates a long text and adds "..." if it exceeds the limit
-export function truncateText(text, maxLength = 30) {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
-}
-
-// ==========================================
-// 4. MATH & UTILS
-// ==========================================
-
-// Generates a random number between min and max (inclusive)
-export function randomRange(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-// Formats big numbers (e.g., 1500 -> 1.5k, 2500000 -> 2.5M)
-export function formatNumberShort(num) {
-  if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
-  if (num >= 1e3) return (num / 1e3).toFixed(1) + 'k';
-  return num.toString();
+  async sendMessage(msg) {
+    this.history.push({ role: "user", parts: [{ text: msg }] });
+    try {
+      const resp = await fetch(this.apiUrl, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: this.history, systemInstruction: { parts: [{ text: this.instruct }] }})
+      });
+      const data = await resp.json();
+      const reply = data.candidates[0].content.parts[0].text;
+      this.history.push({ role: "model", parts: [{ text: reply }] });
+      return reply;
+    } catch (e) { return `Error: ${e.message}`; }
+  }
 }
