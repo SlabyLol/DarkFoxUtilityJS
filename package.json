@@ -1,7 +1,7 @@
 {
   "name": "@slabylol/darkfoxutilityjs",
-  "version": "1.1.0",
-  "description": "A sleek utility library by DarkFox Co. for Node.js and direct browser integration.",
+  "version": "1.3.0",
+  "description": "Elite JS Utility Library with Adaptive WebAI and SMT-Grid Layout Engine.",
   "main": "index.js",
   "type": "module",
   "publishConfig": {
@@ -11,13 +11,6 @@
     "type": "git",
     "url": "git+https://github.com/SlabyLol/DarkFoxUtilityJS.git"
   },
-  "keywords": [
-    "darkfox",
-    "utility",
-    "browser",
-    "esm"
-  ],
   "author": "DF-Exploiter",
-  "license": "MIT",
-  "copyright": "Copyright (c) 2026 DarkFox Co."
+  "license": "MIT"
 }
