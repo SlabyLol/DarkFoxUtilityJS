@@ -1,6 +1,6 @@
 {
   "name": "@slabylol/darkfoxutilityjs",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Elite JS Utility Library with Adaptive WebAI and SMT-Grid Layout Engine.",
   "main": "index.js",
   "type": "module",
