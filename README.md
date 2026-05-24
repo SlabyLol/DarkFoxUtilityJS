@@ -1,8 +1,8 @@
-# DarkFoxUtilityJS v1.4.0
+# DarkFoxUtilityJS v1.4.1
 
 ## The Modular Revolution in Web Utilities
 
-Welcome to the definitive production release of **DarkFoxUtilityJS v1.4.0**. Built by **DarkFox Co.** and engineered by **DF-Exploiter**, this framework represents a fundamental shift away from bloated monolithic utility scripts toward high-performance, isolated, and adaptive enterprise-grade modules and the best thing is that it is completly **FREE** to use.
+Welcome to the definitive production release of **DarkFoxUtilityJS v1.4.1**. Built by **DarkFox Co.** and engineered by **DF-Exploiter**, this framework represents a fundamental shift away from bloated monolithic utility scripts toward high-performance, isolated, and adaptive enterprise-grade modules and the best thing is that it is completly **FREE** to use.
 
 This ecosystem provides zero-config layout engines, advanced performance timings, strict security data hardening, and a native adaptive AI communication layer—delivered as a lightweight bundle natively accessible via absolute cross-repository paths.
 
@@ -14,7 +14,7 @@ DarkFoxUtilityJS splits core engineering concerns into **8 dedicated module file
 
 Current Package Release link:
 ```bash
-https://cdn.jsdelivr.net/gh/SlabyLol/DarkFoxUtilityJS@v1.4.0/index.js
+https://cdn.jsdelivr.net/gh/SlabyLol/DarkFoxUtilityJS@v1.4.1/index.js
 ```
 
 
