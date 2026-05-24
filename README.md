@@ -13,6 +13,6 @@ This ecosystem provides zero-config layout engines, advanced performance timings
 DarkFoxUtilityJS splits core engineering concerns into **8 dedicated module files**. The framework utilizes a "Barrel File" design model via `index.js`, allowing you to fetch any combination of sub-modules through a single global CDN endpoint without unnecessary script fragmentation or runtime resource leaks.
 
 Current Package Release link:
-'''
+ˋˋˋ
 https://cdn.jsdelivr.net/gh/SlabyLol/DarkFoxUtilityJS@v1.4.0/index.js
-'''
+ˋˋˋ
