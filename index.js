@@ -1,6 +1,6 @@
 /**
  * DarkFoxUtilityJS - Full Suite Engine v1.3.0
- * Includes: Performance, Security, Storage, UI & Adaptive WebAI
+ * Includes: Performance, Security, Storage, UI, SMT-Grid & Adaptive WebAI
  */
 
 // --- 1. CORE & LOGGING ---
@@ -13,7 +13,29 @@ export const foxLog = {
 
 export const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
-// --- 2. PERFORMANCE ---
+// --- 2. SMT-GRID LAYOUT ENGINE (AUTOMATIC INJECTION) ---
+export function initSMTGrid() {
+  if (document.getElementById('smt-grid-style')) return;
+  
+  const style = document.createElement('style');
+  style.id = 'smt-grid-style';
+  style.innerHTML = `
+    .smt-grid { 
+      display: grid; 
+      grid-template-columns: 1fr; 
+      gap: 20px; 
+      max-width: 1000px; 
+      margin: auto; 
+    }
+    @media (min-width: 768px) { 
+      .smt-grid { grid-template-columns: 1fr 1.5fr; } 
+    }
+  `;
+  document.head.appendChild(style);
+  foxLog.success("SMT-Grid Layout Engine successfully injected.");
+}
+
+// --- 3. PERFORMANCE ---
 export function debounce(func, delay = 300) {
   let timeoutId;
   return (...args) => {
@@ -33,7 +55,7 @@ export function throttle(func, limit = 300) {
   };
 }
 
-// --- 3. SECURITY & DATA ---
+// --- 4. SECURITY & DATA ---
 export function generatePassword(len = 16) {
   const c = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
   return Array.from({length: len}, () => c[Math.floor(Math.random()*c.length)]).join('');
@@ -48,7 +70,7 @@ export function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
-// --- 4. SMART STORAGE ---
+// --- 5. SMART STORAGE ---
 export const foxStorage = {
   set: (key, val, ttl = null) => {
     localStorage.setItem(key, JSON.stringify({ data: val, exp: ttl ? Date.now() + ttl : null }));
@@ -61,7 +83,7 @@ export const foxStorage = {
   }
 };
 
-// --- 5. ADAPTIVE WEBAI ENGINE ---
+// --- 6. ADAPTIVE WEBAI ENGINE ---
 export class DFWebAI {
   constructor(apiKey) {
     this.apiKey = apiKey;
