@@ -1,8 +1,8 @@
 /**
  * DarkFoxUtilityJS - WebAI Engine Module
  * Powered by DarkFox Co.
- * * Implements adaptive AI communication leveraging the Gemini 1.5 Flash API
- * with integrated response-validation to prevent runtime object crashes.
+ * * v1.4.2 - Upgraded to Gemini 2.5 Flash Engine
+ * Fixed 404 Model Not Found error by routing traffic to the updated model pool.
  */
 
 export class DFWebAI {
@@ -12,7 +12,9 @@ export class DFWebAI {
    */
   constructor(apiKey) {
     this.apiKey = apiKey;
-    this.apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.apiKey}`;
+    
+    // FIX: Modell auf gemini-2.5-flash aktualisiert, um den 404-Fehler zu beheben
+    this.apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${this.apiKey}`;
     this.history = [];
     
     // Core prompt behavior: Ensures mirror mimicry of the client's tone
@@ -40,7 +42,7 @@ export class DFWebAI {
       
       const data = await resp.json();
       
-      // CRITICAL VALIDATION: Check if the response contains the expected candidates structure
+      // Validation Check for valid candidates structure
       if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
         const reply = data.candidates[0].content.parts[0].text;
         
@@ -49,16 +51,16 @@ export class DFWebAI {
         return reply;
       } 
       
-      // FALLBACK 1: Capture structural API errors transmitted by Google (e.g., Invalid Key, Quota Exceeded)
+      // Fallback 1: Capture structural API errors transmitted by Google
       if (data.error) {
         return `[DarkFox AI Error]: ${data.error.message} (Status: ${data.error.status}, Code: ${data.error.code})`;
       } 
       
-      // FALLBACK 2: Safety blocker or unmapped API format alterations
+      // Fallback 2: Safety blocker or unexpected API formats
       return "[DarkFox AI Error]: Message blocked by safety filters or received an unmappable payload response.";
       
     } catch (e) { 
-      // FALLBACK 3: Complete physical connection breakdown (e.g., offline, CORS blocker)
+      // Fallback 3: Network breakdown
       return `[DarkFox Connection Error]: ${e.message}`; 
     }
   }
